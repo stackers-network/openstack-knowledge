@@ -1,0 +1,146 @@
+# openstack-knowledge — consolidated manifest
+#
+# One living source of truth for OpenStack domain expertise, consumed by:
+#   1. an AI agent directly (clone this repo, point Claude Code / opencode / codex at CLAUDE.md)
+#   2. the stackers.network site, which renders this into /learn pages + a /learn.md
+#      agent manifest and grounds lessons in live community activity
+#   3. (optionally) a skill-pack CLI that copies skills into a user's project
+#
+# Consolidates the former agentic-stacks/openstack-core, openstack-kolla, and the
+# learning bits of common-skills into a single iterable repo.
+
+name: openstack-knowledge
+namespace: stackers-network
+version: 0.1.0
+description: >
+  Composed OpenStack expertise for AI agents — service internals, deployment with
+  kolla-ansible, day-two operations, upgrades, and an interactive learning harness.
+  The durable, iterable knowledge base behind the Learn OpenStack experience on
+  stackers.network.
+
+repository: https://github.com/stackers-network/openstack-knowledge
+license: Apache-2.0
+
+# Independent. Not affiliated with or endorsed by the OpenInfra Foundation. The
+# OpenStack name is used under nominative fair use to describe what this covers.
+disclaimer: >
+  An independent, community-maintained knowledge base for the OpenStack project.
+  Not affiliated with, endorsed by, or an official part of the OpenInfra Foundation
+  or the OpenStack project. "OpenStack" and related marks are trademarks of the
+  OpenInfra Foundation, used here under nominative fair use.
+
+target:
+  software: openstack
+  # SLURP-aware: the supported releases and the upgrade paths between them.
+  versions: ["2025.1", "2025.2", "2026.1"]
+  upgrade_paths: ["2025.1->2025.2", "2025.2->2026.1", "2025.1->2026.1"]
+
+# ---------------------------------------------------------------------------
+# Learning modes — the three verbs the harness exposes. These are what the
+# stackers.network /learn.md manifest surfaces to a visitor's agent.
+# ---------------------------------------------------------------------------
+learning_modes:
+  - name: orient
+    entry: harness/orient
+    invite: "Where do I start with OpenStack?"
+    description: "Survey what's here and recommend a path based on the learner's goal and level."
+  - name: train
+    entry: harness/train
+    invite: "Teach me OpenStack fresh."
+    description: "Assess level, build a curriculum from core/, teach concepts then procedures with exercises."
+  - name: guide
+    entry: harness/guide
+    invite: "Guide me through a deployment."
+    description: "Task-oriented walkthrough — assess the environment, build a plan, execute step by step (drives deploy/)."
+
+# ---------------------------------------------------------------------------
+# How this repo is consumed. The stackers.network renderer reads `surfaces`
+# and `live_grounding` to build the hosted experience; a bare agent only needs
+# `entry`.
+# ---------------------------------------------------------------------------
+consumption:
+  entry: CLAUDE.md          # agent identity, critical rules, routing table, workflows
+  agents_file: AGENTS.md    # portable pointer for codex / opencode / other tools
+  surfaces:
+    - repo                  # clone + point an agent at CLAUDE.md (works offline, survives anything)
+    - web                   # https://stackers.network/learn.md (agent fetches skills on demand)
+    - pages                 # https://stackers.network/learn/ (human, browseable, SEO)
+
+# Live grounding is the stackers-specific layer. The knowledge tree is timeless;
+# the site injects "what's happening now" by pointing the harness at these feeds.
+# A bare clone ignores this block; the site renderer wires it into /learn.md.
+live_grounding:
+  site: https://stackers.network
+  index: https://stackers.network/llms.txt
+  latest_issue: https://stackers.network/issues/        # newest mailing-list digest (.md alongside .html)
+  project_feed: https://stackers.network/projects/{slug}/feed.xml
+  project_page: https://stackers.network/projects/{slug}/
+  # slug = the OpenStack Gerrit project with "/" -> "-", e.g. openstack/neutron -> openstack-neutron
+  note: >
+    When teaching or guiding a specific service, fetch the matching project feed to
+    ground the lesson in the changes that merged this week. Treat it as current
+    signal, not as authoritative API reference.
+
+# ---------------------------------------------------------------------------
+# Skills. `entry` is a directory; its README.md is the skill's entry point.
+# Service skills carry supporting files (architecture.md / internals.md /
+# operations.md) the harness reads in sequence.
+# ---------------------------------------------------------------------------
+skills:
+  # --- Learning harness -----------------------------------------------------
+  - { name: orient, group: harness, entry: harness/orient, description: "Project overview + recommend a starting point" }
+  - { name: train,  group: harness, entry: harness/train,  description: "Interactive curriculum-based teaching from core/" }
+  - { name: guide,  group: harness, entry: harness/guide,  description: "Wizard-style guided task walkthroughs (drives deploy/)" }
+
+  # --- Foundation -----------------------------------------------------------
+  - { name: architecture,        group: core, entry: core/foundation/architecture,        description: "How OpenStack services fit together; control vs compute plane" }
+  - { name: deployment-overview, group: core, entry: core/foundation/deployment-overview, description: "Deployment methods compared (kolla-ansible, OpenStack-Ansible, devstack, packages)" }
+  - { name: configuration,       group: core, entry: core/foundation/configuration,       description: "Common config patterns: oslo.config, endpoints, message bus, DB" }
+
+  # --- Core services --------------------------------------------------------
+  - { name: identity,          group: core, entry: core/identity,                  description: "Keystone — users, projects, roles, tokens, federation, the service catalog" }
+  - { name: compute,           group: core, entry: core/compute,                   description: "Nova + Placement — instances, flavors, scheduling, live migration" }
+  - { name: networking,        group: core, entry: core/networking,                description: "Neutron — networks, routers, OVN/OVS backends, floating IPs, security groups" }
+  - { name: block-storage,     group: core, entry: core/storage/block,             description: "Cinder — volumes, snapshots, backends, multi-attach" }
+  - { name: image,             group: core, entry: core/storage/image,             description: "Glance — images, formats, stores, signing" }
+  - { name: object-storage,    group: core, entry: core/storage/object,            description: "Swift — object storage, rings, containers, replication" }
+  - { name: shared-filesystem, group: core, entry: core/storage/shared-filesystem, description: "Manila — shared file systems, shares, share networks" }
+  - { name: heat,              group: core, entry: core/orchestration/heat,        description: "Heat — orchestration templates (HOT), stacks, autoscaling" }
+  - { name: magnum,            group: core, entry: core/orchestration/magnum,      description: "Magnum — Kubernetes cluster provisioning on OpenStack" }
+  - { name: load-balancing,    group: core, entry: core/load-balancing,            description: "Octavia — load balancers, listeners, pools, health monitors" }
+  - { name: dns,               group: core, entry: core/dns,                       description: "Designate — DNS zones, records, BIND/pools integration" }
+  - { name: bare-metal,        group: core, entry: core/bare-metal,                description: "Ironic — bare-metal provisioning, drivers, introspection" }
+  - { name: security,          group: core, entry: core/security,                  description: "Barbican secrets/certs + cloud hardening guidance" }
+  - { name: dashboard,         group: core, entry: core/dashboard,                 description: "Horizon and Skyline web dashboards" }
+
+  # --- Deployment (kolla-ansible) ------------------------------------------
+  - { name: config-build, group: deploy, entry: deploy/config-build, description: "Build globals.yml, inventory, and service configs from operator requirements" }
+  - { name: deploy,       group: deploy, entry: deploy/deploy,       description: "Full kolla-ansible lifecycle — bootstrap, prechecks, pull, deploy, post-deploy" }
+  - { name: health-check, group: deploy, entry: deploy/health-check, description: "Validate environment health — APIs, agents, containers, networking" }
+  - { name: diagnose,     group: deploy, entry: deploy/diagnose,     description: "Systematic troubleshooting — logs, configs, container state, infrastructure" }
+  - { name: day-two,      group: deploy, entry: deploy/day-two,      description: "Day-two ops — add compute, reconfigure, enable services" }
+  # kolla deployment-time reference (distinct from the service-level reference/ group below)
+  - { name: deploy-decision-guides, group: deploy, entry: deploy/reference/decision-guides, description: "kolla deployment choices — networking (OVN/OVS) and storage (Ceph/LVM/NFS) backends" }
+  - { name: deploy-compatibility,   group: deploy, entry: deploy/reference/compatibility,   description: "kolla compatibility — OpenStack release x distro x networking x storage" }
+  - { name: deploy-known-issues,    group: deploy, entry: deploy/reference/known-issues,    description: "kolla-ansible deployment bugs and workarounds per release" }
+
+  # --- Cross-cutting operations --------------------------------------------
+  - { name: health-check,      group: operations, entry: operations/health-check,      description: "Cloud/API-level health verification (service-agnostic; complements deploy/health-check)" }
+  - { name: diagnose,          group: operations, entry: operations/diagnose,          description: "General OpenStack troubleshooting across services (complements deploy/diagnose)" }
+  - { name: upgrades,          group: operations, entry: operations/upgrades,          description: "Release upgrades incl. the SLURP path; prechecks, DB backups, sequencing" }
+  - { name: backup-restore,    group: operations, entry: operations/backup-restore,    description: "Back up and restore databases and service state" }
+  - { name: capacity-planning, group: operations, entry: operations/capacity-planning, description: "Plan capacity and quotas; size the control and compute planes" }
+
+  # --- Reference (service-level) -------------------------------------------
+  - { name: decision-guides, group: reference, entry: reference/decision-guides, description: "Choose deployment tool, networking & storage backends, object store, and dashboard" }
+  - { name: compatibility,   group: reference, entry: reference/compatibility,   description: "Compatibility matrix — services x releases" }
+  - { name: known-issues,    group: reference, entry: reference/known-issues,    description: "Known bugs and workarounds per supported release (2025.1, 2025.2, 2026.1)" }
+
+requires:
+  tools:
+    - { name: openstack,      description: "OpenStack CLI (python-openstackclient) for cloud operations and verification" }
+    - { name: kolla-ansible,  description: "Deployment and lifecycle management (deploy/ skills)", optional: true }
+    - { name: docker,         description: "Container runtime for kolla services", optional: true }
+  python: ">=3.11"
+
+depends_on: []
