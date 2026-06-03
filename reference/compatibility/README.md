@@ -14,9 +14,10 @@ OpenStack follows a 6-month cadence: April (`.1`) and October (`.2`) releases. S
 |---|---|---|---|---|
 | 2024.1 | Caracal | Apr 2024 | Yes | Maintained |
 | 2024.2 | Dalmatian | Oct 2024 | No | Maintained |
-| 2025.1 | Epoxy | Apr 2025 | Yes | Current |
-| 2025.2 | Flamingo | Oct 2025 | No | Current |
-| 2026.1 | (codename pending) | Apr 2026 | Yes | Pre-release / upcoming |
+| 2025.1 | Epoxy | Apr 2025 | Yes | Maintained |
+| 2025.2 | Flamingo | Oct 2025 | No | Maintained |
+| 2026.1 | Gazpacho | Apr 2026 | Yes | Maintained (current stable) |
+| 2026.2 | Hibiscus | Oct 2026 (est.) | No | Development |
 
 SLURP releases receive extended support (approximately 18 months after release). Non-SLURP releases receive standard support (approximately 12 months).
 
@@ -30,7 +31,7 @@ SLURP releases receive extended support (approximately 18 months after release).
 | 2024.2 (Dalmatian) | 3.10 | 3.12 | Python 3.12 added |
 | 2025.1 (Epoxy) | 3.10 | 3.12 | All three versions tested in CI |
 | 2025.2 (Flamingo) | 3.10 | 3.12 | Consistent with 2025.1 |
-| 2026.1 | 3.11 | 3.13 | Python 3.10 support removed; 3.13 added |
+| 2026.1 (Gazpacho) | 3.10 | 3.13 | Official tested runtimes: Python 3.10–3.13 (3.10 remains the minimum; 3.13 added) |
 
 Check the Python version on your target nodes:
 
@@ -108,7 +109,11 @@ OpenStack is packaged and tested against specific host operating systems. Using 
 | 2024.2 (Dalmatian) | Yes | Yes | Yes | No | Yes | Yes |
 | 2025.1 (Epoxy) | Yes | Yes | Yes | Yes (early) | Yes | Limited |
 | 2025.2 (Flamingo) | Yes | Yes | Yes | Yes | Yes | Verify |
-| 2026.1 | Yes | Yes | Yes | Yes | Verify | Verify |
+| 2026.1 | Verify | Yes | Verify (RDO) | Verify (RDO) | — | — |
+
+> **2026.1 (Gazpacho) official tested runtimes:** Ubuntu 24.04 and Debian 13 (Debian 12 also tested to validate SLURP upgrades from 2025.1). Distros outside that set — Rocky/RHEL via RDO, Ubuntu 22.04 — are community-packaged rather than upstream-tested; verify availability before relying on them. Source: https://governance.openstack.org/tc/reference/runtimes/2026.1.html
+>
+> *(This table predates the release and lists a Debian 12 column; Gazpacho's tested Debian is 13.)*
 
 **Ubuntu** packages are maintained by the Ubuntu Cloud Archive (UCA) for LTS releases. UCA provides the current OpenStack release on Ubuntu LTS.
 

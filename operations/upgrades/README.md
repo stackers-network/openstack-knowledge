@@ -40,7 +40,7 @@ Under the SLURP program:
 | 2024.2 | Dalmatian | No | 2024 |
 | **2025.1** | **Epoxy** | **Yes** | **2025** |
 | 2025.2 | Flamingo | No | 2025 |
-| **2026.1** | **(codename pending)** | **Yes** | **2026** |
+| **2026.1** | **Gazpacho** | **Yes** | **2026** |
 
 ### Upgrade Paths for 2025.x and 2026.1
 

@@ -15,7 +15,7 @@ This directory documents known bugs, regressions, and workarounds for specific O
 |---|---|---|---|
 | [2025.1.md](2025.1.md) | 2025.1 | Epoxy | April 2025 |
 | [2025.2.md](2025.2.md) | 2025.2 | Flamingo | October 2025 |
-| [2026.1.md](2026.1.md) | 2026.1 | (codename pending) | April 2026 |
+| [2026.1.md](2026.1.md) | 2026.1 | Gazpacho | April 2026 |
 
 ## Entry Format
 
