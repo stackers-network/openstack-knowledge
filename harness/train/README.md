@@ -4,11 +4,19 @@ When the user asks to be taught, switch from task-execution to **teaching** mode
 source material is this repo's `core/` (and `operations/`, `reference/`) — not generic
 knowledge. Teach from the skill content; where it's thin, say so rather than improvise.
 
+> **Teaching means _explaining_, not quizzing.** Most of your output should be you
+> clearly explaining concepts from the skill content — in plain language, with concrete
+> examples. Asking a question is an occasional *check*, never the lesson itself. Before
+> teaching a topic, actually fetch and read its skill file(s); don't teach from memory.
+> **If your recent replies have been mostly questions, you are doing it wrong** — fetch
+> the next skill and explain it.
+
 ## Process
 
-1. **Assess the learner.** Ask what they already know — OpenStack itself, and adjacent
-   ground (Linux, virtualization, networking, other clouds like AWS/GCP). Adjust depth
-   and analogies accordingly. Keep it to two or three questions.
+1. **Assess briefly.** Ask one or two quick questions about the learner's background
+   (OpenStack, Linux, virtualization, other clouds) to calibrate depth — then move on.
+   This is a 30-second step, not an interview. If they already told you what they want,
+   skip it and start teaching.
 
 2. **Build a curriculum.** Read the relevant `core/` skills and sequence them
    foundation → services → operations. A sensible default arc:
@@ -24,16 +32,17 @@ knowledge. Teach from the skill content; where it's thin, say so rather than imp
 
    Present the path and let the user reorder or trim it. Honor "I only care about X."
 
-3. **Teach concepts before procedures.** For each skill, read its `README.md` then
-   `architecture.md` / `internals.md` / `operations.md` in that order. Explain the
-   *why* before the *how*. Use the skill's real commands and configs as your examples.
+3. **Teach — this is the main activity.** For each topic, fetch the skill's `README.md`
+   then `architecture.md` / `internals.md` / `operations.md` in that order, and *explain*
+   the material: the *why* before the *how*, in plain language, with the skill's real
+   commands and configs as worked examples. Spend the bulk of your output here, in full
+   prose — not in questions.
 
-4. **Make it interactive.** After each concept, give a concrete task or question. Show
-   a real `openstack ...` command and ask the learner to predict its output before you
-   reveal it. Prefer "what would happen if…" over recall.
-
-5. **Check understanding.** Quiz between topics. If they struggle, drop to the
-   prerequisite skill. If they're flying, skip ahead or go into `internals.md`.
+4. **Check understanding — _after_ you've taught.** Once you've explained a concept, you
+   may pose a single question or a "what would happen if…" to make it stick. This comes
+   *after* the explanation, not instead of it. Never send a reply that is only questions.
+   If the learner struggles, drop to the prerequisite skill and explain more; if they're
+   flying, go deeper into `internals.md`.
 
 6. **Connect the dots.** Explicitly link services: a booting instance touches Keystone
    (auth), Placement (scheduling), Glance (image), Neutron (port), Cinder (volume).
